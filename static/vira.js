@@ -160,7 +160,7 @@ function speak(text, rates = 1.0, pitchs = 0.78, onEndCallback = null) {
 async function sendCommandToVira(command) {
     const loader=msgskull();
     try{
-        const response = await fetch(`http://127.0.0.1:5000/command`, {
+        const response = await fetch(`https://vira.up.railway.app/command`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ command: command }),
@@ -204,7 +204,7 @@ async function sendFileToVira(cmd,file) {
     formData.append('prompt', cmd); 
     addMessage('user', `${cmd} Uploading file: ${file.name}`);
     try {
-        const response = await fetch('http://127.0.0.1:5000/upload', {
+        const response = await fetch('https://vira.up.railway.app/upload', {
             method: 'POST',
             body: formData
         });
@@ -322,4 +322,5 @@ keybut.addEventListener('click', () => {
     else{
         console.error("Vira: Can't recieve any prompt.")
     }
+
 });
