@@ -1,19 +1,14 @@
 import google.generativeai as genai
 import os
 from dotenv import load_dotenv
-import speech_recognition as sr
-import pyttsx3
 import datetime
 import requests
 import os
 import webbrowser
-import wmi
 import random
 import json
 import re
 import wikipedia
-import smtplib
-from email.message import EmailMessage
 import fitz
 load_dotenv()
 GEMINI_API=os.getenv("gemini-api")
@@ -24,42 +19,6 @@ else:
     GEMINI_MODEL = None
 API_KEY=os.getenv("weather")
 COUNTRY ='IN'
-hippocampus="memory.json"
-class Colors:
-    RESET = '\033[0m'
-    RED = '\033[91m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    BLUE = '\033[94m'
-    CYAN = '\033[96m'
-    WHITE = '\033[97m'
-engine = pyttsx3.init()
-engine.setProperty('voice', 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-AU_James_11.0')
-engine.setProperty('rate', 179)
-engine.setProperty('volume', 100)
-def speak(text):
-    engine.say(text)
-    engine.runAndWait()
-def listen(timeout_val=4, phrase=5):
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        print(f"{Colors.YELLOW}Listening...{Colors.RESET}")
-        r.pause_threshold = 1.5 #breaks
-        try:
-            audio = r.listen(source, timeout=timeout_val, phrase_time_limit=phrase) #lis
-            print(f"{Colors.BLUE}Recognizing...{Colors.RESET}")
-            query = r.recognize_google(audio, language='English')
-            print(f"{Colors.CYAN}You said: {Colors.RESET}{Colors.WHITE}{query}{Colors.RESET}\n")
-            return query.lower()
-        except sr.WaitTimeoutError:
-            print("No speech detected within the timeout.")
-            return ""
-        except sr.UnknownValueError:
-            print("Sorry, I could not understand audio.")
-            return ""
-        except sr.RequestError as e:
-            print(f"Could not request results from Google Speech Recognition service; {e}")
-            return ""
 def get_weather(city, country_code, api_key):
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
     complete_url = f"{base_url}q={city},{country_code}&appid={api_key}&units=metric"
@@ -123,34 +82,6 @@ def define_word(word):
     except Exception as e:
         print(f"An error occurred while defining word: {e}")
         return "Sorry, something went wrong while trying to define that word."
-def open_app(app_name):
-    app_name=app_name.lower()
-    if(os.name=='nt'):
-        if "chrome" in app_name:
-            os.startfile("chrome.exe")
-            return "opening chrome"
-        elif "notepad" in app_name:
-            os.startfile("notepad.exe")
-            return "opening notepad"
-        elif "calculator" in app_name:
-            os.startfile("calc.exe")
-            return "opening calculator"
-        elif "calendar" in app_name:
-            os.startfile("HxCalendarAppImm.exe")
-            return "opening calendar . Say cheese!!."
-        else:
-            return f"I dont know how to open {app_name}"
-def brightness(value):
-    if not 0<=value<=100:
-        return "THE BRIGHTNESS LEVEL SHOULD BE BETWEEN 0 to 100"
-    try:
-        m= wmi.WMI(namespace='root\\WMI')
-        times=m.WmiMonitorBrightnessMethods()
-        for n in times:
-            n.WmiSetBrightness(value, 1)
-        return f"BRIGHTNESS OF YOUR DEVICE IS SUCCESSFULLY SET TO {value} percent"
-    except Exception as e:
-        return "SORRY . PLEASE CHECK THAT YOU INSTALLED THE WINDOWS MANAGEMENT INSTRUMENTATION ON YOUR DEVICE"
 def crack_jack():
     url = "https://official-joke-api.appspot.com/jokes/random"
     response = requests.get(url)
@@ -300,16 +231,6 @@ def convert(text):
     ssml_text = re.sub(r'\*\*(.*?)\*\*',' ',text)
     ssml_text = re.sub(r'\*(.*?)\*', ' ',ssml_text)
     return ssml_text
-def write_email(to,sub,body):
-    email=EmailMessage()
-    email['From']='chandujoshita47@gmail.com'
-    email['To']=to
-    email['Subject']=sub
-    email.set_content(body)
-    with smtplib.SMTP_SSL('smtp.gmail.com',465) as smtp:
-        smtp.login('chandujoshita47@gmail.com','chandu@123456',True)
-        smtp.send_message(email)
-    return "mail Sent Sucessfully"
 def get_summary(inst,pdf_file):
     try:
         pdf_file.seek(0)
@@ -327,34 +248,6 @@ def get_summary(inst,pdf_file):
     except Exception as e:
         print(f"Error processing PDF: {e}")
         return "Sorry, I had trouble processing that PDF."
-def load():
-    if os.path.exists(hippocampus):
-        try:
-            with open(hippocampus, 'r') as h:
-                content = h.read().strip()
-                if not content:
-                    return {}
-                return json.loads(content)
-        except json.JSONDecodeError:
-            return {}
-def save(data):
-    with open(hippocampus,'w') as h:
-        return json.dump(data,h,indent=4)
-    print(f"[Memory Saved] → {os.path.abspath(hippocampus)}")
-def update(key,val):
-    memo=load()
-    memo[key]=val
-    save(memo)
-def get(key):
-    memo=load()
-    return memo.get(key)
-def forget(key):
-    memo = load()
-    if key in memo:
-        del memo[key]
-        save(memo)
-        return f"I Deleted {key} from my storage.."
-    return f"I don't remember anything about {key}."
 def web_command(command):
     command = command.lower()
     cur = datetime.datetime.now().strftime("%p")
@@ -391,24 +284,9 @@ def web_command(command):
             return f"{define_word(word_to_define.strip())}"
         else:
             return "Please tell me which word you would like to define."
-    elif re.search(r'open\s+(notepad|chrome|web browser|google chrome|calculator|calendar|youtube|google|whatsapp)\b', command):
-        app = re.search(r'open\s+(notepad|chrome|web browser|google chrome|calculator|calendar|youtube|google|whatsapp)\b', command)
-        if app:
-            app_name = app.group(1)
-            return open_app(app_name)
     elif "launch " in command:
         sd=command.replace("launch","").strip()
         return webbrowser.open(f"https://www.google.com/search?q={sd}.com"),f"OPENING {sd}"
-    elif  re.search(r'set (?:screen )?brightness to (\d{1,3})(?: percent|%)?', command):
-        brightness_match = re.search(r'set (?:screen )?brightness to (\d{1,3})(?: percent|%)?', command)
-        if brightness_match:
-            try:
-                level = int(brightness_match.group(1))
-                return brightness(level)
-            except ValueError:
-                return "I didn't understand the brightness level ☀. Please say a number like 'set brightness to 70 percent'."
-        else:
-            return "Sorry, I can only set the screen brightness to a specific percentage."
     elif "stop" in command or "exit" in command or "quit" in command or "go to sleep" in command:
         return "Goodbye! It was nice interacting with you."
     elif re.search(r'jarvis\s+(roll the dice|roll a dice)|(roll a dice\s|roll the dice\s)+(jarvis)|roll a dice\b', command):
@@ -438,20 +316,6 @@ def web_command(command):
     elif "news" in command or "headlines" in command:
         eric=news()
         return f"{eric}"
-    elif re.search(r'send mail\s + subject\s+(.+)\s +body\s+(.+)', command):
-        mail_match = re.search(r'send mail\s + subject\s+(.+)\s +body\s+(.+)', command)
-        if mail_match:
-            tomail = "chandujoshita47@gmail.com"
-            subject = mail_match.group(1).strip()
-            body = mail_match.group(2).strip()
-            full_body = GEMINI_MODEL.generate_content(f"Give me body of an mail for this scenario {body}")
-            if "@" in tomail and "." in tomail:
-                response = write_email(tomail, subject, full_body)
-                return response
-            else:
-                return "The email address seems invalid. Please provide a full email address."
-        else:
-            return "Sorry, I couldn't understand the command. Please say 'send mail to [email] as subject [subject] and body as [message]'."
     elif "wikipedia" in command or "search wikipedia" in command:
         query = command.replace("search wikipedia for", "").replace("wikipedia", "").strip()
         if query:
@@ -464,57 +328,10 @@ def web_command(command):
     elif "tell me a fun fact" in command or "give me a fact" in command or "random fact" in command or "fact" in command:
         facts = fact()
         return f"The fact is :{facts}"
-    elif "story of jarvis" in command or "your journey" in command:
-        return " I am jarvis an Speech assistant from normal if else commands To large NPL language. I have Faced many rejections but now I was Updated to provide powerfull and impactfull solutions. Thanks for trusting and choosing me as your Assistant."
     elif "who are you" in command or "about yourself" in command:
         return "I am Jarvis an Powerfull Speech Assistant. I can answer any queries asked by you."
     elif "created you" in command:
         return "I was created by Rohan on May 2025."
-    elif "remember" in command:
-        text = command.replace("remember", "", 1).strip()
-        if " is " in text:
-            key, value = text.split(" is ", 1)
-            key, value = key.strip(), value.strip()
-            memo=load()
-            save(memo)
-            update(key, value)
-            if "my" in key:
-                key= key.replace('my','your')
-            return f"Okay, I will remember that {key} is {value}."
-        return "Please tell me in the format => Key is Value"
-    elif "when is" in command or "what is" in command:
-        key = command.replace("what is", "").replace("when is", "").strip()
-        value = get(key)
-        print(f"[Memory Saved] → {os.path.abspath(hippocampus)}")
-        if value:
-            if key.startswith("my "):
-                phrase = key.replace("my", "your", 1).capitalize()
-            elif key.startswith("your "):
-                phrase = key.replace("your", "my", 1).capitalize()
-            else:
-                phrase = key.capitalize()
-            return f"{phrase} is {value}."
-        else:
-            gemini_response = GEMINI_MODEL.generate_content(command)
-            if gemini_response or hasattr(gemini_response, 'text'):
-                return f"{convert(gemini_response.text)}"
-            else:
-                return "Error calling Api"
-    elif "forget" in command or "forgot" in command:
-        key = command.replace("forget", "").replace("forgot","").strip()
-        memo = load()
-        if key in memo:
-            del memo[key]
-            save(memo)
-            if "my" in key:
-               key= key.replace('my','your',1)
-               return f"Okay, I forgot {key}."
-        else:
-            gemini_response = GEMINI_MODEL.generate_content(command)
-            if gemini_response or hasattr(gemini_response, 'text'):
-                return f"{convert(gemini_response.text)}"
-            else:
-                return "Error calling api"
     for trigger, func in command_map.items():
         if trigger in command:
             query = command.replace(trigger, "").strip()
@@ -530,4 +347,5 @@ def web_command(command):
                 return f"{convert(gemini_response.text)}"
         except Exception as e:
             return f"Error calling API: {e}"
+
     return "I'm not sure how to respond to that. My advanced AI brain is not configured."
