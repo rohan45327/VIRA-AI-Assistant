@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIRA</title>
+    <link rel="icon" href="static\assets\viralogo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="static\vira.css">
+</head>
+<body>
+    <div id="ima">
+        <img id="sword" src="static\assets/virasword.jpg">
+    </div>
+    <div class="container">
+        <div id="new"><h1>V.I.R.A</h1></div>
+        <span id="time"></span>
+     <div class="chat-log" id="chat-log">
+        <input type="file" id="filein" hidden>
+        <input placeholder="instructions" id="instr">
+            <div class="message jarvis-message" id="msg">Vira: </div>
+        </div>
+        <div class="input-area">
+            <input placeholder="Enter your search query for VIRA" id="keyboard">
+            <button class="upload-btn" id="uploadBtn" title="Upload files and more < 50Mb">+</button>
+            <button type="submit" id="but" title="Click to see results of your prompt">➤</button>
+            <button id="micBtn" class="mic-button" title="Click to Talk with Vira">🎙</button>
+        </div>
+        
+    </div>
+    <!-- <footer>
+        <span>
+            Rohan &copy; <span id="year"></span>
+        </span>
+    </footer> -->
+    <script src="static\vira.js"></script>
+</body>
+</html>
