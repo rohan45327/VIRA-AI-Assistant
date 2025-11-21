@@ -9,7 +9,7 @@ import random
 import json
 import re
 import wikipedia
-import fitz
+import pypdf
 load_dotenv()
 GEMINI_API=os.getenv("gemini-api")
 if GEMINI_API:
@@ -234,10 +234,10 @@ def convert(text):
 def get_summary(inst,pdf_file):
     try:
         pdf_file.seek(0)
-        doc = fitz.open(stream=pdf_file.read(), filetype="pdf")
+        doc = pypdf.PdfReader(pdf_file)
         text = ""
-        for page in doc:
-            text += page.get_text()
+        for page in doc.pages:
+            text += page.extract_text() or ""
         doc.close()
         if GEMINI_MODEL:
             prompt = f"{inst}:\n" + text
@@ -349,3 +349,4 @@ def web_command(command):
             return f"Error calling API: {e}"
 
     return "I'm not sure how to respond to that. My advanced AI brain is not configured."
+
