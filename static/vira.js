@@ -29,7 +29,7 @@ let recognition;
 let isListening = false;
 let expectingSpeech = false;
 let availableVoices = [];
-const usrname='Chandu';
+const usrname='User';
 const upbut=document.getElementById('uploadBtn')
 const filen=document.getElementById('filein')
 speechSynthesis.onvoiceschanged = () => {
@@ -318,4 +318,5 @@ keybut.addEventListener('click', () => {
     }
 
 });
+
 
