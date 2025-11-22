@@ -232,7 +232,6 @@ if (SpeechRecognition) {
         isListening = true;
         expectingSpeech = true;
         plays(active);
-        statusText.textContent = 'Listening... Speak now.';
         micBtn.textContent=''
         micBtn.classList.add('dots')
         micBtn.classList.add('listening');
@@ -243,7 +242,6 @@ if (SpeechRecognition) {
         console.log('You said:', transcript);
         addMessage('user', transcript);
         plays(active);
-        statusText.textContent = 'Processing command...';
         micBtn.classList.remove('listening');
         micBtn.classList.remove('dots')
         micBtn.textContent="🎙"
@@ -254,7 +252,6 @@ if (SpeechRecognition) {
 
     recognition.onerror = (event) => {
         console.error('Speech recognition error:', event.error);
-        statusText.textContent = `Error: ${event.error}. Click button to retry.`;
         micBtn.classList.remove('dots')
         micBtn.classList.remove('listening');
         micBtn.textContent="🎙"
@@ -267,7 +264,6 @@ if (SpeechRecognition) {
     recognition.onend = () => {
         if (expectingSpeech) {
             plays(errorSound);
-            statusText.textContent = 'I can’t hear anything. Click the mic to speak.';
             micBtn.classList.remove('dots')
             micBtn.classList.remove('listening');
             micBtn.textContent="🎙"
@@ -285,7 +281,6 @@ if (SpeechRecognition) {
             recognition.start();
         }
         if (speechSynthesis.speaking) {
-            statusText.textContent = 'You stopped the response. Click mic button to generate another response.';
             speechSynthesis.cancel();
             isListening = false;
         }
@@ -293,7 +288,6 @@ if (SpeechRecognition) {
 
 } else {
     micBtn.style.display = 'none';
-    statusText.textContent = 'Speech Recognition is not supported in this browser.';
     console.error('Web Speech API not supported.');
 }
 document.addEventListener('keypress',(event)=>{
@@ -324,3 +318,4 @@ keybut.addEventListener('click', () => {
     }
 
 });
+
