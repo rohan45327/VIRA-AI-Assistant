@@ -230,6 +230,7 @@ def fact():
 def convert(text):
     ssml_text = re.sub(r'\*\*(.*?)\*\*',' ',text)
     ssml_text = re.sub(r'\*(.*?)\*', ' ',ssml_text)
+    ssml_text=ssml_text.replace("google", "VIRA labs ").replace("gemini","VIRA")
     return ssml_text
 def get_summary(inst,pdf_file):
     try:
@@ -329,8 +330,8 @@ def web_command(command):
         facts = fact()
         return f"The fact is :{facts}"
     elif "who are you" in command or "about yourself" in command:
-        return "I am Jarvis an Powerfull Speech Assistant. I can answer any queries asked by you."
-    elif "created you" in command:
+        return "I am VIRA an Virtually Integrated Assistant and Powerfull Speech Assistant. I can answer any queries asked by you."
+    elif "created you" in command or "invented you" in command:
         return "I was created by Rohan on May 2025."
     for trigger, func in command_map.items():
         if trigger in command:
@@ -342,7 +343,8 @@ def web_command(command):
     if GEMINI_MODEL:
         try:
             print(f"No specific command matched. Searching for : {command}")
-            custom="Please generate short and easy way to express your feelings "+command
+            custom="Please generate short if ppossible and easy way, funny to express your feelings"
+            command+=custom
             gemini_response = GEMINI_MODEL.generate_content(command)
             if gemini_response or hasattr(gemini_response, 'text'):
                 return f"{convert(gemini_response.text)}"
@@ -350,5 +352,6 @@ def web_command(command):
             return f"Error calling API: {e}"
 
     return "I'm not sure how to respond to that. My advanced AI brain is not configured."
+
 
 
