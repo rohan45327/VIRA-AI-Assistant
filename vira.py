@@ -343,7 +343,7 @@ def web_command(command):
     if GEMINI_MODEL:
         try:
             print(f"No specific command matched. Searching for : {command}")
-            custom="Please generate short if ppossible and easy way, funny to express your feelings"
+            custom="Please generate short if possible and easy language, concentrate only on the main part dont give unnecessary stuff, Keep funny"
             command+=custom
             gemini_response = GEMINI_MODEL.generate_content(command)
             if gemini_response or hasattr(gemini_response, 'text'):
@@ -352,6 +352,7 @@ def web_command(command):
             return f"Error calling API: {e}"
 
     return "I'm not sure how to respond to that. My advanced AI brain is not configured."
+
 
 
 
