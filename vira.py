@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import datetime
 import requests
 import os
-import webbrowser
 import random
 import json
 import re
@@ -160,11 +159,11 @@ def song(song_query: str) -> str:
         response = requests.get(search_url, params=sparams)
         response.raise_for_status()
         data = response.json()
-        items = data.get('items')
+        items= data.get('items')
         if items[0]['id']['kind'] == 'youtube#video':
             video_id = items[0]['id']['videoId']
-            video_url = f"https://www.youtube.com/watch?v={video_id}"
-            return  webbrowser.open(video_url)
+            video_url =f"https://www.youtube.com/watch?v={video_id}"
+            return video_url
         else:
             return f"I couldn't find a video for '{song_query}' on YouTube."
     except requests.exceptions.HTTPError as http_err:
@@ -230,7 +229,7 @@ def fact():
 def convert(text):
     ssml_text = re.sub(r'\*\*(.*?)\*\*',' ',text)
     ssml_text = re.sub(r'\*(.*?)\*', ' ',ssml_text)
-    ssml_text=ssml_text.replace("google", "VIRA labs ").replace("gemini","VIRA")
+    ssml_text=ssml_text.replace("Google", "VIRA labs ").replace("Gemini","VIRA")
     return ssml_text
 def get_summary(inst,pdf_file):
     try:
@@ -238,8 +237,7 @@ def get_summary(inst,pdf_file):
         doc = pypdf.PdfReader(pdf_file)
         text = ""
         for page in doc.pages:
-            text += page.extract_text() or ""
-        doc.close()
+            text += page.extract_text() or "No ocr file detected."
         if GEMINI_MODEL:
             prompt = f"{inst}:\n" + text
             response = GEMINI_MODEL.generate_content(prompt)
@@ -261,7 +259,6 @@ def web_command(command):
     command_map = {
         "hello vira": lambda: f"{wake}",
         "search wikipedia for": lambda q: f"According to Wikipedia, {wiki(q)}",
-        "play": lambda q: f"Playing {q} from Youtube. {song(q)}",
     }
     if "weather" in command:
         city_match = re.search(r'(?:in|for)\s+([a-zA-Z\s]+)', command)
@@ -285,6 +282,11 @@ def web_command(command):
             return f"{define_word(word_to_define.strip())}"
         else:
             return "Please tell me which word you would like to define."
+    elif "open" in command or "launch" in command or "play song" in command:
+        q = command.replace("play", "").strip()
+        video_url = song(q)
+        if video_url and video_url.startswith('http'):
+            return f"Playing {q} from YouTube. URL: {video_url}" 
     elif "launch " in command:
         sd=command.replace("launch","").strip()
         return webbrowser.open(f"https://www.google.com/search?q={sd}.com"),f"OPENING {sd}"
@@ -352,6 +354,7 @@ def web_command(command):
             return f"Error calling API: {e}"
 
     return "I'm not sure how to respond to that. My advanced AI brain is not configured."
+
 
 
 
