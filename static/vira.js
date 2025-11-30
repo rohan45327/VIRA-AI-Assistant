@@ -88,7 +88,14 @@ function addMessage(sender, text){
         }
         else{
             clearInterval(type);
-            let formated=text.replace("/ /", '').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>').replace(/```[\s\S]*?```/g, match => `<pre>${match.slice(3,-3)}</pre>`).replace(/`([^`]*)`/g, '<code>$1</code>');
+            let formated=text.replace(/\/ \//g, '').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>').replace(/```[\s\S]*?```/g, match => `<pre>${match.slice(3,-3)}</pre>`)
+                             .replace(/`([^`]*)`/g, '<code>$1</code>')
+                             .replace(/######\s*(.*)/g, '<h6>$1</h6>')
+                             .replace(/#####\s*(.*)/g, '<h5>$1</h5>')
+                             .replace(/####\s*(.*)/g, '<h4>$1</h4>')
+                             .replace(/###\s*(.*)/g, '<h3>$1</h3>')
+                             .replace(/##\s*(.*)/g, '<h2>$1</h2>')
+                             .replace(/#\s*(.*)/g, '<h1>$1</h1>');
             messageDiv.innerHTML='Vira: '+formated;
             const copybtn=document.createElement('button');
             copybtn.className='copy-but'; 
@@ -318,5 +325,6 @@ keybut.addEventListener('click', () => {
     }
 
 });
+
 
 
