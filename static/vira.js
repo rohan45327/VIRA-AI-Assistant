@@ -95,7 +95,6 @@ function addMessage(sender, text){
                              .replace(/####\s*(.*)/g, '<h4>$1</h4>')
                              .replace(/###\s*(.*)/g, '<h3>$1</h3>')
                              .replace(/##\s*(.*)/g, '<h2>$1</h2>')
-                             .replace(/#\s*(.*)/g, '<h1>$1</h1>');
             messageDiv.innerHTML='Vira: '+formated;
             const copybtn=document.createElement('button');
             copybtn.className='copy-but'; 
@@ -325,6 +324,7 @@ keybut.addEventListener('click', () => {
     }
 
 });
+
 
 
 
