@@ -30,7 +30,7 @@ VIRA handles voice, keyboard, and file inputs, and uses the Google Gemini API fo
 * **Intelligence** : Google Gemini 2.5 FlashFast, high-capacity Large Language Model (LLM) for reasoning and summarization.
 * **File Handling** : PyMuPDF / PyPDF Library for reliable PDF text extraction.
 * **Frontend/UI** : HTML5, CSS3, JavaScript Cross-device compatibility and high-performance client-side logic (Web Speech API).
-* **Deployment** : Railway (PaaS) Serverless deployment platform for containerized Python applications.**
+* **Deployment** : Hugging Face with Docker Images.**
 ## 🚀 Getting Started (Local Setup):
 **Follow these instructions to run VIRA locally on your machine.**
 #### * Prerequisites:
