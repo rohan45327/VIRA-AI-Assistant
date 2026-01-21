@@ -2,7 +2,7 @@
 VIRA- Virtually Integrated Assistant helps in your Daily tasks with voice and text. Inspired from jarvis
 **VIRA is a versatile, full-stack voice assistant built using Python (Flask/Gunicorn) and JavaScript.**
 VIRA handles voice, keyboard, and file inputs, and uses the Google Gemini API for powerful, multimodal intelligence.
-## 🤖 Main Theme of VIRA and Working:
+##  Main Theme of VIRA and Working:
 * The Vira was made with the intention to help users on there daily tasks.
 * It has wide range of features like pdf-summary, letter writting, email writing, funny convo etc.
 * While falling to technical part it can write codes, fix errors, suggest brainstorms etc.
@@ -16,7 +16,7 @@ VIRA handles voice, keyboard, and file inputs, and uses the Google Gemini API fo
 * 3rd If the command is not catched, It uses the API knowledge for Real time Knowledge like Weather, News, sports etc.
 * 4th The main LLM Brain for Reasoning and Generative quires.
 
-## 🌟 Features:
+##  Features:
 * **Multimodal Input:** Accepts commands via voice (microphone),keyboard text input, and file upload.<br>
 * **Secure File Processing:** Analyzes and reviews PDF and Image files based on a user-provided text instruction (e.g., "Summarize this PDF").<br>
 * **Typing Animation:** Features a smooth, character-by-character typing animation for VIRA's responses, enhancing UX.
@@ -24,14 +24,14 @@ VIRA handles voice, keyboard, and file inputs, and uses the Google Gemini API fo
 * **Core Utility:** Handles weather, definitions, news headlines, jokes, memory recall, and application launching (locally).
 * The many other feauters like WMI brightness control, opening Apps, launching Sites, songs are disabled due to Error while Building in Railway production. Please Visit the
   repo in my github to see the full Python file of Vira
-## 🛠️ Technology: 
+##  Technology: 
 * **Backend Framework** : Flask (Python)Lightweight, flexible WSGI micro-framework for API handling.
 * **Production Server** : GunicornStable, production-grade WSGI server for cloud deployment
 * **Intelligence** : Google Gemini 2.5 FlashFast, high-capacity Large Language Model (LLM) for reasoning and summarization.
 * **File Handling** : PyMuPDF / PyPDF Library for reliable PDF text extraction.
 * **Frontend/UI** : HTML5, CSS3, JavaScript Cross-device compatibility and high-performance client-side logic (Web Speech API).
 * **Deployment** : Hugging Face with Docker Images.**
-## 🚀 Getting Started (Local Setup):
+##  Getting Started (Local Setup):
 **Follow these instructions to run VIRA locally on your machine.**
 #### * Prerequisites:
 - Python 3.11+ installed.
@@ -46,9 +46,9 @@ Clone the Repository:
 #### * Run the Server:
 - ```gunicorn app:app --workers 4 --timeout 120```
 - Open your browser and navigate to the URL displayed by Gunicorn (e.g., http://127.0.0.1:8000/static/vira.html).
-## ✍️ License:
+##  License:
 #### This project is licensed under the Apache License 2.0. See the LICENSE file for details.
-## 👥 Contact:
+##  Contact:
 #### Creator: K. Satya Rohan
 #### GitHub: @rohan45327
 #### Email: chandujoshita47@gmail.com
